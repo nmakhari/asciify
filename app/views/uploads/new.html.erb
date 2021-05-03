@@ -2,6 +2,14 @@
 
 <h2>Create Upload</h2>
 
+<div>
+    <% if @upload.errors.any? %>
+        <% @upload.errors.full_messages.each do |msg| %>
+            <h3><%= msg %></h3>
+        <% end %>
+    <% end %>
+</div>
+
 <%= form_for :upload, url: uploads_path do |f| %>
 
     <p>
@@ -9,7 +17,12 @@
         <%= f.text_field :title %>
     </p>
 
-    <p>TODO: ADD TAGS & IMAGE UPLOAD HERE</p>
+    <p>
+        <%= f.label :image%>
+        <%= f.file_field  :image%>
+    </p>
+
+    <p>TODO: ADD TAGS HERE</p>
 
     <div>
         <%= f.submit("Upload")%>
