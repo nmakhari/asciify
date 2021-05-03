@@ -1,8 +1,10 @@
 class UploadsController < ApplicationController
   def index
+    @uploads = Upload.all
   end
 
   def show
+    @upload = Upload.find(params[:id])
   end
 
   def info
@@ -12,6 +14,14 @@ class UploadsController < ApplicationController
   end
 
   def create
-    render plain: params[:upload].inspect
+    @upload = Upload.new(upload_params)
+
+    @upload.save
+    redirect_to @upload
+  end
+
+  private
+  def upload_params
+    params.require(:upload).permit(:title)
   end
 end
