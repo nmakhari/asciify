@@ -7,4 +7,11 @@ class UploadsController < ApplicationController
 
   def info
   end
+
+  def new
+  end
+
+  def create
+    render plain: params[:upload].inspect
+  end
 end
