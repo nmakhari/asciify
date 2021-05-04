@@ -1,12 +1,19 @@
-<h1>Uploads#index</h1>
+<div class="container-fluid page-wrapper">
+    <div class="row row-cols-xs-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3">
+        <% @uploads.in_groups(3, false) do |group| %>
+            <div class="col">
+                <% group.each do |upload| %>
+                    <div class="image-container">
+                        <%= link_to image_tag(upload.image, :class => "col-image"), :action => 'show', :controller => 'uploads', :id => upload.id%>
+                        <%= link_to :action => 'show', :controller => 'uploads', :id => upload.id do %>
+                            <div class="title-container">
+                                <div class="title"><%= upload.title %></div>
+                            </div>
+                        <% end %>
+                    </div>
+                <% end %>
+            </div>
+        <% end %>
+    </div>
+</div>
 
-
-<h2>These are all the uploads</h2>
-
-<% @uploads.each do |upload| %>
-
-    <h3> <%= upload.title %> </h3>
-    <% if upload.image.attached? %>
-        <%= image_tag(upload.image) %>
-    <% end %>
-<% end %>

@@ -13,3 +13,16 @@
  *= require_tree .
  *= require_self
  */
+
+.page-wrapper {
+  background-color: #1b1b1b;
+}
+
+.nav-bar-brand-title {
+  color: white;
+  font-size: 32px;
+}
+
+.nav-bar-brand-title:hover {
+  color: #04aa6d;
+}
