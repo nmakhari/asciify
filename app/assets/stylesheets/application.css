@@ -18,6 +18,16 @@
   background-color: #1b1b1b;
 }
 
+html,
+body {
+  height: 100%;
+}
+
+.fill {
+  min-height: 100%;
+  height: 100%;
+}
+
 .nav-bar-brand-title {
   color: white;
   font-size: 32px;
@@ -25,4 +35,25 @@
 
 .nav-bar-brand-title:hover {
   color: #04aa6d;
+}
+
+.form-error-container {
+  background-color: #ff5f52;
+  border-radius: 5px;
+}
+
+.form-error-text {
+  font-size: 16px;
+  color: white;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.form-title-text {
+  font-size: 26px;
+  color: white;
+}
+
+.form-file-upload-button {
+  color: white;
 }

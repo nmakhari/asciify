@@ -1,30 +1,36 @@
-<h1>Uploads#new</h1>
-
-<h2>Create Upload</h2>
-
-<div>
-    <% if @upload.errors.any? %>
-        <% @upload.errors.full_messages.each do |msg| %>
-            <h3><%= msg %></h3>
+<div class="d-flex flex-column justify-content-center align-items-center fill page-wrapper">
+    
+        <% if @upload.errors.any? %>
+            <div class="p-2 text-center form-error-container">
+                <% @upload.errors.full_messages.each do |msg| %>
+                    <div class="form-error-text"><%= msg %></div>
+                <% end %>
+            </div>
         <% end %>
-    <% end %>
-</div>
+    
 
-<%= form_for :upload, url: uploads_path do |f| %>
+    <div class="p-2 col-xs-1 text-center">
+        <%= form_for :upload, url: uploads_path do |f| %>
 
-    <p>
-        <%= f.label :title %>
-        <%= f.text_field :title %>
-    </p>
+            <p>
+                <div class="form-title-text">
+                    <%= f.label :title %>
+                </div>
+                <%= f.text_field(:title, {:class => "form-control"}) %>
+            </p>
 
-    <p>
-        <%= f.label :image%>
-        <%= f.file_field  :image%>
-    </p>
+            <p> 
+                <div class="form-title-text">
+                    <%= f.label :image%>
+                </div>
+                <%= f.file_field(:image, {:class => "form-file-upload-button"})%>
+            </p>
 
-    <p>TODO: ADD TAGS HERE</p>
+            <p class="form-title-text">TODO: ADD TAGS HERE</p>
 
-    <div>
-        <%= f.submit("Upload")%>
+            <div>
+                <%= f.submit("Upload", {:class => "btn btn-success"})%>
+            </div>
+        <%end%>
     </div>
-<%end%>
+</div>

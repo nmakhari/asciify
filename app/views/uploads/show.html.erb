@@ -1,7 +1,9 @@
-<h1>Uploads#show</h1>
+<div class="d-flex flex-column justify-content-center align-items-center fill page-wrapper">
+    <div class="p-2 text-center show-title-text"><%= @upload.title %></div>
 
-<h2><%= @upload.title %></h2>
+    <%= image_tag(@upload.image, :class => "show-image") %>
 
-<%= image_tag(@upload.image) %>
-
-<h2><%= @upload.ascii %></h2>
+    <div class="p-2 show-ascii-container">
+        <div class="show-ascii-text"><%= @upload.ascii %></div>
+    </div>
+</div>
