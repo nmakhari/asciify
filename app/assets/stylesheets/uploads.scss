@@ -67,3 +67,10 @@
 .show-ascii-text {
   font-size: 10px;
 }
+
+.show-container {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 30px;
+  min-height: 100%;
+}

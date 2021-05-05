@@ -12,8 +12,8 @@ class Upload < ApplicationRecord
             errors.add(:image, "is missing!")
         elsif !image.content_type.in?(%('image/jpeg image/png'))
             errors.add(:image, "must be jpeg or png.")
-        elsif image.byte_size < 1.kilobyte || image.byte_size > 5.megabytes
-            errors.add(:image, "must be between 1kb and 5mb in size.")
+        elsif image.byte_size > 10.megabytes
+            errors.add(:image, "must be at most 10mb in size.")
         end
     end
 end
