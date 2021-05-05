@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+# https://channaly.medium.com/how-to-work-with-active-storage-attachment-in-rspec-23bcc49712d6
+
 RSpec.describe Upload, type: :model do
 
   let(:example_upload) { described_class.new( title: "SampleShortTitle",

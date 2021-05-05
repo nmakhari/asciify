@@ -10,9 +10,6 @@ class UploadsController < ApplicationController
     @upload = Upload.find(params[:id])
   end
 
-  def info
-  end
-
   def new
     @upload = Upload.new
   end
