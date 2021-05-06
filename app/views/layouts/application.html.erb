@@ -11,6 +11,10 @@
   <nav class="navbar .navbar-dark bg-dark justify-content-between">
     <%= link_to "ASCIIFY", {action: 'index', controller: 'uploads'}, class: 'navbar-brand nav-bar-brand-title' %>
     <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <form class="form-inline">
       <%= link_to "Upload Image", {action: 'new', controller: 'uploads'}, class: 'btn btn-secondary' %>
     </form>
   </nav>
