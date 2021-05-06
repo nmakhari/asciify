@@ -3,7 +3,7 @@ require 'rmagick'
 
 class UploadsController < ApplicationController
   def index
-    @uploads = Upload.all.reverse_order
+    @uploads = Upload.with_attached_image.all.reverse_order
   end
 
   def show
