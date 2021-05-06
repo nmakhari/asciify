@@ -60,6 +60,43 @@ RSpec.describe Upload, type: :model do
     expect(example_upload).to_not be_valid
   end
 
+  context "tags" do
+    let(:sample_tag_0) { Tag.new(title: "sample tag title 0") }
+    let(:sample_tag_1) { Tag.new(title: "sample tag title 1") }
+    let(:sample_tag_2) { Tag.new(title: "sample tag title 2") }
+    let(:sample_tag_3) { Tag.new(title: "sample tag title 3") }
+    let(:sample_tag_4) { Tag.new(title: "sample tag title 4") }
+    let(:sample_tag_5) { Tag.new(title: "sample tag title 5") }
+
+    before do
+      sample_tag_0.save!
+      sample_tag_1.save!
+      sample_tag_2.save!
+      sample_tag_3.save!
+      sample_tag_4.save!
+      sample_tag_5.save!
+    end
+
+    it "is valid with 5 or less tags" do
+      example_upload.tags << sample_tag_0
+      example_upload.tags << sample_tag_1
+      example_upload.tags << sample_tag_2
+      example_upload.tags << sample_tag_3
+      example_upload.tags << sample_tag_4
+      expect(example_upload).to be_valid
+    end
+
+    it "is not valid with tags > 5" do
+      example_upload.tags << sample_tag_0
+      example_upload.tags << sample_tag_1
+      example_upload.tags << sample_tag_2
+      example_upload.tags << sample_tag_3
+      example_upload.tags << sample_tag_4
+      example_upload.tags << sample_tag_5
+      expect(example_upload).to_not be_valid
+    end
+  end
+
   context "when the image is larger than 10mb" do
 
     before do

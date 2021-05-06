@@ -1,13 +1,18 @@
 class Upload < ApplicationRecord
+    attr_accessor :tags_string
+
     has_one_attached :image
+    has_and_belongs_to_many :tags
 
     validates   :title, :presence => true,
                 :length => { maximum: 30 }
     validates_presence_of    :ascii
 
-    validate :image_size_and_type
+    validate :validate_image_size_and_type
+    
+    validates_length_of :tags, :maximum => 5
 
-    def image_size_and_type
+    def validate_image_size_and_type
         if image.attached? == false
             errors.add(:image, "is missing!")
         elsif !image.content_type.in?(%('image/jpeg image/png'))

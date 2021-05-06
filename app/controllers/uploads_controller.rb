@@ -15,7 +15,23 @@ class UploadsController < ApplicationController
   end
 
   def create
-    @upload = Upload.new(upload_params.merge!(ascii: convert_to_ascii))
+    # create the original object without tag string in params
+    @upload = Upload.new(upload_params.merge!(ascii: convert_to_ascii).except(:tags_string))
+
+    # accept a comma separated list of tags
+    tag_list = upload_params[:tags_string].delete(' ').split(',')
+    tag_list.each do |tag|
+      existing_tag = Tag.find_by title: tag
+      if existing_tag.present?
+        @upload.tags << existing_tag
+      else
+        new_tag = Tag.new(title: tag)
+        if new_tag.save
+          @upload.tags << new_tag
+        end
+      end
+    end
+
     if @upload.save
       redirect_to @upload
     else
@@ -24,9 +40,9 @@ class UploadsController < ApplicationController
   end
 
   private
-  
+
   def upload_params
-    params.require(:upload).permit(:title, :image)
+    params.require(:upload).permit(:title, :image, :tags_string)
   end
 
   def prepare_image

@@ -3,6 +3,14 @@
 
     <%= image_tag(@upload.image, :class => "show-image") %>
 
+    <% if @upload.tags.count > 0 %>
+        <div class="show-tag-container">
+            <% @upload.tags.each do |tag| %>
+                <div class="show-tag-text"><%= tag.title %></div>
+            <% end %>
+        </div>
+    <% end %>
+
     <div class="p-2 show-ascii-container">
         <pre class="show-ascii-text"><%= @upload.ascii %></pre>
     </div>
