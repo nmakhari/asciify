@@ -23,6 +23,10 @@ gem 'bootsnap', '<= 1.1.0'
 
 gem 'rmagick'
 
+gem 'jquery-rails', '~> 4.3', '>= 4.3.1'
+
+gem 'ransack', github: 'activerecord-hackery/ransack'
+
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks

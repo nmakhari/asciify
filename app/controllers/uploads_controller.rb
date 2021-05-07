@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rmagick'
 
 class UploadsController < ApplicationController
+
   def index
     @uploads = Upload.with_attached_image.all.reverse_order
   end
@@ -36,6 +37,19 @@ class UploadsController < ApplicationController
       redirect_to @upload
     else
       render('new')
+    end
+  end
+
+  def search
+    @uploads = Upload.ransack(title_cont: params[:q]).result(distinct: true)
+    @tags = Tag.ransack(title_cont: params[:q]).result(distinct: true)
+
+    respond_to do |format|
+      format.html {}
+      format.json {
+        @uploads = @uploads.limit(3)
+        @tags = @tags.limit(3)
+      }
     end
   end
 

@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   root 'uploads#index'
 
+  get 'search', controller: :uploads
   get 'uploads/show'
 
   resources :uploads
