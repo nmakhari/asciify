@@ -21,14 +21,18 @@ class UploadsController < ApplicationController
 
     # accept a comma separated list of tags
     tag_list = upload_params[:tags_string].delete(' ').split(',')
+    current_tag_titles = []
     tag_list.each do |tag|
+      next if tag.in?(current_tag_titles)
       existing_tag = Tag.find_by title: tag
       if existing_tag.present?
         @upload.tags << existing_tag
+        current_tag_titles.append(existing_tag.title)
       else
         new_tag = Tag.new(title: tag)
         if new_tag.save
           @upload.tags << new_tag
+          current_tag_titles.append(new_tag.title)
         end
       end
     end
