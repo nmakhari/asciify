@@ -10,7 +10,7 @@
             \/     \/     \/             \/      
    is an image repository that transforms images into **ascii art**!
    
-   Users can view a list of all uploaded images, upload their own image with a title and tags and also search for images by title and tags.
+   Users can view a list of all uploaded images, upload their own and search for images by title and tags.
    
    **All photos in this README with exception of the shopify logo were taken by me**
    
@@ -33,8 +33,10 @@ Setup:
   4. `bundle install`
   5. `rails db:setup`
   6. `rails db:schema:load`
-  7. `rails s`
-  8. Head to `http://localhost:3000/`!
+  7. `rails db:migrate RAILS_ENV=test` then `bundle exec rspec` to run tests, you should see the following
+ ![tests](https://user-images.githubusercontent.com/55306725/117528466-7192b400-afa0-11eb-8622-f0dc8c8270da.jpg)
+  9. `rails s`
+  10. Head to `http://localhost:3000/`!
 
 ## How
 I created Asciify using **Ruby on Rails** because I wanted a taste of full stack development using a framework I have experience with while getting out of my comfort zone to build something that interests me!
