@@ -1,5 +1,17 @@
-<div class="container-fluid page-wrapper">
+<div class="container-fluid page-wrapper flex-container">
+    <% if @tags.count > 0 %>
+        <div class="search-title-text">Tags</div>
+        <div class="row">
+            <% @tags.each do |tag| %>
+                <div class="col d-flex justify-content-center">
+                    <%= link_to tag.title, tag,  class: "search-tag-text" %>
+                </div>
+            <% end %>
+        </div>
+    <% end %>
+
     <% if @uploads.count > 0 %>
+        <div class="search-title-text">Uploads</div>
         <div class="row row-cols-xs-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3">
             <% @uploads.in_groups(3, false) do |group| %>
                 <div class="col">
@@ -18,8 +30,7 @@
         </div>
     <% end %>
 
-    <% @tags.each do |tag | %>
-        <%# <%= link_to tag.title, tag %>
-        <p><%= tag.title %></p>
+    <% if @uploads.count == 0 && @tags.count == 0 %>
+        <div class="search-title-text">No results</div>
     <% end %>
 </div>

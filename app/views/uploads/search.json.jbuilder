@@ -8,6 +8,6 @@ end
 json.tags do
     json.array!(@tags) do |tag|
         json.title tag.title
-        # json.url tag_path(tag)
+        json.url tag_path(tag)
     end
 end

@@ -6,7 +6,7 @@
     <% if @upload.tags.count > 0 %>
         <div class="show-tag-container">
             <% @upload.tags.each do |tag| %>
-                <div class="show-tag-text"><%= tag.title %></div>
+                <div class="show-tag-text"><%= link_to tag.title, tag %></div>
             <% end %>
         </div>
     <% end %>

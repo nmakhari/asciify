@@ -30,6 +30,13 @@ body {
   height: 100%;
 }
 
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 30px;
+  min-height: 100%;
+}
+
 .nav-bar-brand-title {
   color: white;
   font-size: 32px;
