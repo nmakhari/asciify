@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'rmagick'
 
 RSpec.describe "Uploads", type: :request do
   describe "GET /index" do
@@ -30,18 +31,28 @@ RSpec.describe "Uploads", type: :request do
     end
   end
 
-  # describe "POST /create" do
-  #   it "should make a new upload" do
-  #     # https://stackoverflow.com/questions/47206796/no-decode-delegate-for-this-image-format-error-blob-c-blobtoimage-348
-  #     file = fixture_file_upload(Rails.root.join('spec', 'support', 'assets', 'upload', 'valid_image.png'), 'image/png')
-  #     expect {
-  #       post '/uploads', params: { upload: {title: "sample title", image: file}}
-  #     }.to change(Upload, :count).by(1)
-  #   end
-
-  #   context "image to ascii" do
-  #     it "should create a string with width 150 ascii chars" do
-  #     end
-  #   end
-  # end
+  describe "POST /create" do
+    context "image to ascii" do
+      # There are with sending images through rspec to the post method, possibly related with the Magick installation
+      # Thus, creating the image here and mocking the :prepare_image method allows testing of image -> ascii conversion
+      it "should create a string with width 150 ascii chars" do
+        # Perform the operations in :prepare_image, then provide it as a mock return
+        img = Magick::ImageList.new(Rails.root.join('spec', 'support', 'assets', 'upload', 'valid_image.png'))
+        width = img.columns
+        height = img.rows
+        # resize the image
+        ratio = (height.to_f / width) / 2.to_f
+        new_width = 150
+        new_height = new_width * ratio
+        img.scale!(new_width, new_height)
+        # greyscale the image
+        img.quantize(256, Magick::GRAYColorspace)
+        allow_any_instance_of(UploadsController).to receive(:prepare_image).and_return(img)
+        
+        ascii_string = UploadsController.new.send(:convert_to_ascii)
+        expect(ascii_string.split("\n").first.length).to eq(150)
+        expect(ascii_string.split("\n").length()).to eq(new_height.floor())
+      end
+    end
+  end
 end

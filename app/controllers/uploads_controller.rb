@@ -17,7 +17,7 @@ class UploadsController < ApplicationController
 
   def create
     # create the original object without tag string in params
-    @upload = Upload.new(upload_params.merge!(ascii: convert_to_ascii).except(:tags_string))
+    @upload = Upload.new(upload_params.merge!(ascii: get_image_ascii).except(:tags_string))
 
     # accept a comma separated list of tags
     tag_list = upload_params[:tags_string].delete(' ').split(',')
@@ -57,10 +57,29 @@ class UploadsController < ApplicationController
     end
   end
 
+  def get_image_ascii
+    return "no image provided" unless upload_params[:image].present?
+    convert_to_ascii
+  end
   private
 
   def upload_params
     params.require(:upload).permit(:title, :image, :tags_string)
+  end
+
+  def convert_to_ascii
+    ascii_map = {0 => " ", 1 => ".", 2 => ",", 3 => ":", 4 => ";", 5 => "o", 6 => "x", 7 => "%", 8 => "#", 9 => "@"}
+    img = prepare_image
+    previous_row = 0
+    ascii_string = ""
+    img.each_pixel do |pixel, col, row|
+      if row != previous_row
+        previous_row = row
+        ascii_string.concat("\n")
+      end
+      ascii_string.concat(ascii_map[(255 - (pixel.intensity / 256) ) * 10/256])
+    end
+    ascii_string
   end
 
   def prepare_image
@@ -74,21 +93,5 @@ class UploadsController < ApplicationController
     img.scale!(new_width, new_height)
     # greyscale the image
     img.quantize(256, Magick::GRAYColorspace)
-  end
-
-  def convert_to_ascii
-    return "no image provided" unless upload_params[:image].present?
-    ascii_map = {0 => " ", 1 => ".", 2 => ",", 3 => ":", 4 => ";", 5 => "o", 6 => "x", 7 => "%", 8 => "#", 9 => "@"}
-    img = prepare_image
-    previous_row = 0
-    ascii_string = ""
-    img.each_pixel do |pixel, col, row|
-      if row != previous_row
-        previous_row = row
-        ascii_string.concat("\n")
-      end
-      ascii_string.concat(ascii_map[(255 - (pixel.intensity / 256) ) * 10/256])
-    end
-    ascii_string
   end
 end
