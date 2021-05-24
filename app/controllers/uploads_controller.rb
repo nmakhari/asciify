@@ -4,7 +4,7 @@ require 'rmagick'
 class UploadsController < ApplicationController
 
   def index
-    @uploads = Upload.with_attached_image.all.reverse_order
+    @pagy, @uploads = pagy(Upload.with_attached_image.all.reverse_order)
   end
 
   def show

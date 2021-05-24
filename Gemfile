@@ -27,6 +27,9 @@ gem 'jquery-rails', '~> 4.3', '>= 4.3.1'
 
 gem 'ransack', github: 'activerecord-hackery/ransack'
 
+# pagy < 4.0 for ruby < 3.0 (currently on 2.6.7)
+gem 'pagy', '~> 3.9'
+
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks

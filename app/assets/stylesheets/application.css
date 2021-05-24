@@ -66,3 +66,16 @@ body {
 .form-file-upload-button {
   color: white;
 }
+
+.pagination-wrapper {
+  margin: 15px auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-item.active .page-link {
+  background-color: #04aa6d;
+  border-color: #04aa6d;
+}
