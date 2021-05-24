@@ -68,7 +68,7 @@ body {
 }
 
 .pagination-wrapper {
-  margin: 15px auto;
+  background-color: #1b1b1b;
   display: flex;
   flex-direction: row;
   align-items: center;
