@@ -3,8 +3,10 @@ require 'rmagick'
 
 class UploadsController < ApplicationController
 
+  IMG_WIDTH = 150.freeze
+
   def index
-    @pagy, @uploads = pagy(Upload.with_attached_image.all.reverse_order)
+    @pagy, @uploads = pagy(Upload.with_attached_image.all.reverse_order, items: 30)
   end
 
   def show
@@ -45,7 +47,7 @@ class UploadsController < ApplicationController
   end
 
   def search
-    @uploads = Upload.ransack(title_cont: params[:q]).result(distinct: true)
+    @pagy, @uploads = pagy(Upload.ransack(title_cont: params[:q]).result(distinct: true), items: 30)
     @tags = Tag.ransack(title_cont: params[:q]).result(distinct: true)
 
     respond_to do |format|
@@ -58,9 +60,10 @@ class UploadsController < ApplicationController
   end
 
   def get_image_ascii
-    return "no image provided" unless upload_params[:image].present?
+    return "An Error Occured - No Image Could Be Found" unless upload_params[:image].present?
     convert_to_ascii
   end
+
   private
 
   def upload_params
@@ -88,7 +91,7 @@ class UploadsController < ApplicationController
     height = img.rows
     # resize the image
     ratio = (height.to_f / width) / 2.to_f
-    new_width = 150
+    new_width = IMG_WIDTH
     new_height = new_width * ratio
     img.scale!(new_width, new_height)
     # greyscale the image
