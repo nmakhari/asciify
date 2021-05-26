@@ -33,25 +33,22 @@ RSpec.describe "Uploads", type: :request do
 
   describe "POST /create" do
     context "image to ascii" do
-      # There are with sending images through rspec to the post method, possibly related with the Magick installation
-      # Thus, creating the image here and mocking the :prepare_image method allows testing of image -> ascii conversion
-      it "should create a string with width 150 ascii chars" do
-        # Perform the operations in :prepare_image, then provide it as a mock return
-        img = Magick::ImageList.new(Rails.root.join('spec', 'support', 'assets', 'upload', 'valid_image.png'))
-        width = img.columns
-        height = img.rows
-        # resize the image
-        ratio = (height.to_f / width) / 2.to_f
-        new_width = 150
-        new_height = new_width * ratio
-        img.scale!(new_width, new_height)
-        # greyscale the image
-        img.quantize(256, Magick::GRAYColorspace)
-        allow_any_instance_of(UploadsController).to receive(:prepare_image).and_return(img)
-        
-        ascii_string = UploadsController.new.send(:convert_to_ascii)
-        expect(ascii_string.split("\n").first.length).to eq(150)
-        expect(ascii_string.split("\n").length()).to eq(new_height.floor())
+      it 'should create a string with the specified width' do
+        upload = Upload.new(title: "Sample title", ascii: "Loading Ascii ...")
+        file = Rails.root.join('spec', 'support', 'assets', 'upload', 'valid_image.png')
+        image = ActiveStorage::Blob.create_after_upload!(
+          io: File.open(file, 'rb'),
+          filename: 'valid_image.png',
+          content_type: 'image/png'
+        ).signed_id
+        upload.image = image
+        upload.save!
+
+        # manually kick off background job here as it would be in the controller
+        allow_any_instance_of(ActiveStorage::Service::DiskService).to receive(:path_for).and_return(file)
+        Upload.delay.generate_ascii_string(upload.id)
+        ascii_string = Upload.find(upload.id).ascii
+        expect(ascii_string.split("\n").first.length).to eq(Upload::IMG_WIDTH)
       end
     end
   end

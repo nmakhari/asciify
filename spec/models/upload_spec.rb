@@ -107,4 +107,24 @@ RSpec.describe Upload, type: :model do
       expect(example_upload).to_not be_valid
     end
   end
+
+  context "ascii generation job" do
+    it "should generate an ascii string with correct dimensions given an existing upload id" do
+      upload = Upload.new(title: "Sample title", ascii: "Loading Ascii ...")
+      file = Rails.root.join('spec', 'support', 'assets', 'upload', 'valid_image.png')
+      image = ActiveStorage::Blob.create_after_upload!(
+        io: File.open(file, 'rb'),
+        filename: 'valid_image.png',
+        content_type: 'image/png'
+      ).signed_id
+      upload.image = image
+      upload.save!
+
+      # manually kick off background job here as it would be in the controller
+      allow_any_instance_of(ActiveStorage::Service::DiskService).to receive(:path_for).and_return(file)
+      described_class.generate_ascii_string(upload.id)
+      ascii_string = described_class.find(upload.id).ascii
+      expect(ascii_string.split("\n").first.length).to eq(described_class::IMG_WIDTH)
+    end
+  end
 end

@@ -30,6 +30,12 @@ gem 'ransack', github: 'activerecord-hackery/ransack'
 # pagy < 4.0 for ruby < 3.0 (currently on 2.6.7)
 gem 'pagy', '~> 3.9'
 
+# delayed job with active record backend
+gem 'delayed_job_active_record'
+
+# for managing background job worker process
+gem 'daemons'
+
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
