@@ -12,6 +12,35 @@
     <% end %>
 
     <div class="p-2 show-ascii-container">
-        <pre class="show-ascii-text"><%= @upload.ascii %></pre>
+        <pre class="show-ascii-text" id="ascii-string"><%= @upload.ascii %></pre>
     </div>
 </div>
+
+<script>
+    var pollingInterval = null;
+    
+    function onSuccess(data) {
+        $("#ascii-string").text(data);
+        if (data != "<%= UploadsController::PLACEHOLDER_ASCII %>") {
+            clearInterval(pollingInterval);
+        }     
+    }
+
+    function pollAsciiString() {
+        $.ajax({
+            url: "/ascii",
+            type: "get",
+            data: {'id': <%= @upload.id %>},
+            cache: false,
+            success: function(data) { onSuccess(data) },
+            error: function (response) {},
+        });
+    }
+
+    $(document).ready(function () {
+        if ("<%= @upload.ascii[0..17] %>" == "<%= UploadsController::PLACEHOLDER_ASCII %>") {
+            // Use custom function to set interval that will be cleared on page navigate with turbolinks
+            pollingInterval = setIntervalWithTurbolinks(pollAsciiString, 1000);
+        }
+    });
+</script>

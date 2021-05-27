@@ -1,4 +1,8 @@
 class UploadsController < ApplicationController
+  before_action :force_json, only: :ascii
+
+  PLACEHOLDER_ASCII = "Loading Ascii ...".freeze
+
   def index
     @pagy, @uploads = pagy(Upload.with_attached_image.all.reverse_order, items: 30)
   end
@@ -13,7 +17,7 @@ class UploadsController < ApplicationController
 
   def create
     # create the original object without tag string in params
-    @upload = Upload.new(upload_params.merge!(ascii: "Loading Ascii ...").except(:tags_string))
+    @upload = Upload.new(upload_params.merge!(ascii: PLACEHOLDER_ASCII).except(:tags_string))
 
     # accept a comma separated list of tags
     tag_list = upload_params[:tags_string].delete(' ').split(',')
@@ -55,9 +59,18 @@ class UploadsController < ApplicationController
     end
   end
 
+  def ascii
+    upload = Upload.find_by_id(params[:id])
+    render json: upload.ascii.to_json
+  end
+
   private
 
   def upload_params
     params.require(:upload).permit(:title, :image, :tags_string)
+  end
+
+  def force_json
+    request.format = :json
   end
 end

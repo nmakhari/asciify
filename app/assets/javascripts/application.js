@@ -11,8 +11,20 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery_ujs
 //= require rails-ujs
 //= require turbolinks
 //= require jquery.easy-autocomplete
 //= require_tree .
+
+function setIntervalWithTurbolinks(intervalFunction, milliseconds) {
+  var interval = setInterval(intervalFunction, milliseconds);
+
+  $(document).on(
+    "turbolinks:before-cache turbolinks:before-render",
+    function () {
+      clearTimeout(interval);
+    }
+  );
+
+  return interval;
+}
