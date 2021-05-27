@@ -36,7 +36,8 @@ Setup:
   7. `rails db:migrate RAILS_ENV=test` then `bundle exec rspec` to run tests, you should see the following
  ![tests](https://user-images.githubusercontent.com/55306725/117528466-7192b400-afa0-11eb-8622-f0dc8c8270da.jpg)
   9. `rails s`
-  10. Head to `http://localhost:3000/`!
+  10. `rake jobs:work` to start the background worker
+  11. Head to `http://localhost:3000/`!
 
 ## How
 I created Asciify using **Ruby on Rails** because I wanted a taste of full stack development using a framework I have experience with while getting out of my comfort zone to build something that interests me!
@@ -47,6 +48,8 @@ Notable libraries/gems:
  - [Rmagick](https://github.com/rmagick/rmagick) for image operations (needs ImageMagick to function)
  - [Active Storage](https://edgeguides.rubyonrails.org/active_storage_overview.html) to store images, see 'Next Steps' for design choices
  - [Ransack](https://github.com/activerecord-hackery/ransack) with [EasyAutoComplete](http://easyautocomplete.com/guide#sec-include) and [JQuery](https://rubygems.org/gems/jquery-rails/versions/4.3.1) for search functionality
+ - [Pagy](https://github.com/ddnexus/pagy) for result pagination
+ - [Delayed Job](https://github.com/collectiveidea/delayed_job) for image processing background jobs
  - [Rspec](https://github.com/rspec/rspec-rails) for testing!
 
 ## Screenshots / examples
@@ -103,7 +106,7 @@ Backend:
 - Using an ML library to auto-generate tags will result in a more predictable experience when searching and lift some responsibilty from the user
 
 Frontend (excluding general UI work):
-- Although eagerloading attachments is already implemented, it would be a good move to further paginate results/implement some sort of lazy loading to speed up loading times with a very large amount of images. Eager loading is also only implemented around the temporary ActiveStorage solution of image storage, which needs to be replaced in order to scale.
+- Although eagerloading attachments and paginating result is already implemented, after migrating to a cloud storage solution I could explore lazy loading as the user scrolls to speed up the initial page load.
 - Improvements to the image -> ascii conversion would be great! Right now the width of ascii art is set at 150 chars and there are only 10 available characters. Pixel intensities are mapped directly to the related ascii character. This [post](https://stackoverflow.com/a/32987834/15502383) has some really interesting strategies for leveraging the entire printable ascii set along with the shapes and pixel distributions of characters to increase the level of detail.
 
 ## Learnings
