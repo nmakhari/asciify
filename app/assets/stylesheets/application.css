@@ -79,3 +79,7 @@ body {
   background-color: #04aa6d;
   border-color: #04aa6d;
 }
+
+.hide {
+  display: none !important;
+}
