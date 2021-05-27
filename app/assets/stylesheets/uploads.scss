@@ -85,6 +85,40 @@
   font-size: 10px;
 }
 
+.ascii-loading-container {
+  background-color: #1b1b1b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.ascii-spinner {
+  visibility: none;
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #04aa6d;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.ascii-loading-message {
+  color: white;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
 .show-container {
   display: flex;
   flex-direction: column;

@@ -10,8 +10,12 @@
             <% end %>
         </div>
     <% end %>
-
-    <div class="p-2 show-ascii-container">
+    <div class="ascii-loading-container" id="ascii-loading">
+        <div class="ascii-spinner" id="ascii-loading-spinner"></div>
+        <div class="ascii-loading-message">Loading Ascii...</div>
+    </div>
+    
+    <div class="p-2 show-ascii-container" id="ascii-container">
         <pre class="show-ascii-text" id="ascii-string"><%= @upload.ascii %></pre>
     </div>
 </div>
@@ -20,8 +24,10 @@
     var pollingInterval = null;
     
     function onSuccess(data) {
-        $("#ascii-string").text(data);
         if (data != "<%= UploadsController::PLACEHOLDER_ASCII %>") {
+            $("#ascii-loading").hide()
+            $("#ascii-string").text(data);
+            $("#ascii-container").show()
             clearInterval(pollingInterval);
         }     
     }
@@ -39,6 +45,9 @@
 
     $(document).ready(function () {
         if ("<%= @upload.ascii[0..17] %>" == "<%= UploadsController::PLACEHOLDER_ASCII %>") {
+            // hide the ascii and show spinner until successful response
+            $("#ascii-container").hide()
+            $("#ascii-loading").show()
             // Use custom function to set interval that will be cleared on page navigate with turbolinks
             pollingInterval = setIntervalWithTurbolinks(pollAsciiString, 1000);
         }
